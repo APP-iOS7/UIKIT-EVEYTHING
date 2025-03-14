@@ -1,6 +1,6 @@
 import UIKit
 
-class UILabelTest: UIViewController {
+class UILabelView: UIView {
 
     private let stackView: UIStackView = {
         let stack = UIStackView()
@@ -11,14 +11,14 @@ class UILabelTest: UIViewController {
         return stack
     }()
 
-    private let basicLabel: UILabel = {
+    private(set) var basicLabel: UILabel = {
         let label = UILabel()
         label.text = "기본 UILabel 입니다"
         label.font = .systemFont(ofSize: 16)
         return label
     }()
 
-    private let colorLabel: UILabel = {
+    private(set) var colorLabel: UILabel = {
         let label = UILabel()
         label.text = "색상이 있는 UILabel 입니다"
         label.textColor = .systemBlue
@@ -26,14 +26,14 @@ class UILabelTest: UIViewController {
         return label
     }()
 
-    private let multiLineLabel: UILabel = {
+    private(set) var multiLineLabel: UILabel = {
         let label = UILabel()
         label.text = "여러 줄로 표시되는\nUILabel 입니다\n줄바꿈이 가능합니다"
         label.numberOfLines = 0
         return label
     }()
 
-    private let attributedLabel: UILabel = {
+    private(set) var attributedLabel: UILabel = {
         let label = UILabel()
         let attributedString = NSMutableAttributedString(string: "속성이 다른 텍스트입니다")
         attributedString.addAttribute(
@@ -47,26 +47,28 @@ class UILabelTest: UIViewController {
         return label
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
     }
 
-    private func setupUI() {
-        view.backgroundColor = .systemBackground
-        navigationItem.title = "UILabel 테스트"
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-        view.addSubview(stackView)
+    private func setupUI() {
+        backgroundColor = .systemBackground
+
+        addSubview(stackView)
 
         [basicLabel, colorLabel, multiLineLabel, attributedLabel].forEach {
             stackView.addArrangedSubview($0)
         }
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
     }
 }

@@ -12,7 +12,7 @@ class MainTableViewController: UITableViewController {
     // ** 초기 데이터 **
     let data: [ListTile] = [
         ListTile(title: "Test용 라우트 입니다?", route: TestController(receivedTitle: "Test용 라우트 입니다?")),
-        ListTile(title: "UITest", route: UILabelTest())
+        ListTile(title: "UITest", route: UILabelViewController())
     ]
     
     override func viewDidLoad() {
