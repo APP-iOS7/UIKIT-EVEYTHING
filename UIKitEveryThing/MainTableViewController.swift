@@ -11,11 +11,13 @@ class MainTableViewController: UITableViewController {
     
     // ** 초기 데이터 **
     let data: [ListTile] = [
-        ListTile(title: "Test용 라우트 입니다?", route: TestController(receivedTitle: "Test용 라우트 입니다?"))
+        ListTile(title: "Test용 라우트 입니다?", route: TestController(receivedTitle: "Test용 라우트 입니다?")),
+        ListTile(title: "UITest", route: UILabelTest())
     ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpUI()
     }
     // ** 초기 설정 **
@@ -25,7 +27,7 @@ class MainTableViewController: UITableViewController {
     
     // ** Section 개수
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return data.count
+        return 1
     }
     
     // ** 로우 개수**
