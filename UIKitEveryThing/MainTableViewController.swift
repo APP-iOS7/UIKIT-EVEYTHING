@@ -11,7 +11,7 @@ class MainTableViewController: UITableViewController {
     
     // ** 초기 데이터 **
     private(set) var data: [ListTile] = [
-        ListTile(title: "Branch Yonghae : UIView", route: YonghaeUIView(receivedTitle: "UIView"))
+        ListTile(title: "Branch Yonghae : UIView", route: YonghaeUIView(receivedTitle: "UIView")),
         ListTile(title: "UITest", route: UILabelViewController())
     ]
     
