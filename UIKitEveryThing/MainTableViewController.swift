@@ -10,8 +10,8 @@ import UIKit
 class MainTableViewController: UITableViewController {
     
     // ** 초기 데이터 **
-    let data: [ListTile] = [
-        ListTile(title: "Test용 라우트 입니다?", route: TestController(receivedTitle: "Test용 라우트 입니다?")),
+    private(set) var data: [ListTile] = [
+        ListTile(title: "Branch Yonghae : UIView", route: YonghaeUIView(receivedTitle: "UIView"))
         ListTile(title: "UITest", route: UILabelViewController())
     ]
     
@@ -21,8 +21,11 @@ class MainTableViewController: UITableViewController {
         setUpUI()
     }
     // ** 초기 설정 **
-    func setUpUI() {
+    private func setUpUI() {
         navigationItem.title = "UIKIT EVERYTING"
+        let backButton: UIBarButtonItem = UIBarButtonItem()
+        backButton.title = "뒤로가기"
+        navigationItem.backBarButtonItem = backButton
     }
     
     // ** Section 개수
@@ -49,8 +52,12 @@ class MainTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let route: UIViewController = data[indexPath.row].route
         navigationController?.pushViewController(route, animated: true)
+        
         return nil
     }
 }
 
-
+/// private(set)은 읽기 , 쓰기 가 해당 파일에선 가능하지만
+/// 다른 파일에서는 읽기만 가능하게 해서 데이터의 무결성을 지킬 수 있다!
+/// 주의 할점은 보틍 변수 선언을 let으로 하는데 이 부분은 **충돌이 있다!!**
+/// let 은 readOnly이지만 private(set)은 해당 파일에서 읽기 , 쓰기 둘다 되니 충돌하는 것이다.
