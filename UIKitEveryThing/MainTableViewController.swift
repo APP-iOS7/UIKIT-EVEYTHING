@@ -13,7 +13,8 @@ class MainTableViewController: UITableViewController {
     private(set) var data: [ListTile] = [
         ListTile(title: "Branch Yonghae : UIView", route: YonghaeUIView(receivedTitle: "UIView")),
         ListTile(title: "UITest", route: UILabelViewController()),
-        ListTile(title: "ImageView", route: UIImageViewController())
+        ListTile(title: "ImageView", route: UIImageViewController()),
+        ListTile(title: "Yonghae UIImageDemo", route: YonghaeUIImageController())
     ]
     
     override func viewDidLoad() {
