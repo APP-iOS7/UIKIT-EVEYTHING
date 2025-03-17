@@ -34,15 +34,16 @@ private extension UIImageViewController {
     func buildScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .green
         return scrollView
     }
     
     func buildStackView(axis: NSLayoutConstraint.Axis) -> UIStackView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.distribution = 
         stackView.axis = axis
         stackView.spacing = 18
+        stackView.backgroundColor = .gray
         return stackView
     }
     
@@ -92,6 +93,7 @@ private extension UIImageViewController {
         stackView.addArrangedSubview(shapeStackView)
         shapeStackView.addArrangedSubview(circle)
         shapeStackView.addArrangedSubview(rectangular)
+        shapeStackView.addArrangedSubview(UIView())
         stackView.addArrangedSubview(secondTitleLabel)
         stackView.addArrangedSubview(scaleAsoectFitImage)
         
@@ -102,16 +104,14 @@ private extension UIImageViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            // stackView Constraint 여기서 왜 앵커가 안먹을까??
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            // stackView Constraint
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
             // shapeStackView Constraint
             shapeStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-//            shapeStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            shapeStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             
             // circle Constraint
             circle.widthAnchor.constraint(equalToConstant: circleRadius * 2),
@@ -119,7 +119,8 @@ private extension UIImageViewController {
             
             // rectangular Constraint
             rectangular.widthAnchor.constraint(equalToConstant: rectangularSize.width),
-            rectangular.heightAnchor.constraint(equalToConstant: rectangularSize.height)
+            rectangular.heightAnchor.constraint(equalToConstant: rectangularSize.height),
+            
         ])
     }
     
