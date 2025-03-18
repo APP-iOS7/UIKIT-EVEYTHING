@@ -11,6 +11,7 @@ import UIKit
 final class YonghaeUIView: UIViewController {
     private let receivedTitle: String // 외부에서 받아오는 값
     private var isCircle: Bool = false // 내부의 UIView가 원형인지 네모인지 확인 하는 값
+    let appearence = UINavigationBarAppearance()// navigationBar 인스턴스
     private lazy var globalUIView: UIView = { // 즉시 실행 클로저 함수로 UIView를 YonghaeUIView에서 사용 가능한 형태
         let uiView = UIView()
         uiView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,11 +45,12 @@ final class YonghaeUIView: UIViewController {
         setUpUIView() // uiView 세팅
     }
     
-    // ** MARK: 초기 TestController 설정
+    // ** MARK: 초기 YonghaeUIView 설정
     private func setUpUI() {
         // 제목 설정
         self.view.backgroundColor = .white
         navigationItem.title = receivedTitle
+        appearence.configureWithTransparentBackground() // 투명 배경색!?!?!? 나이스
     }
     
     // ** MARK: globalUIView 세팅
@@ -69,50 +71,47 @@ final class YonghaeUIView: UIViewController {
         ])
     }
     
-    // ** MARK: TapGesture 핸들러 함수 .. 애니메이션의 시간이 왜 다 다르죠? 네 끝나는 시간도 맞추고 싶어요
+    // ** MARK: TapGesture 핸들러 함수
     @objc private func tapHandler() {
         isCircle.toggle()
         print("UIView를 누르면 이벤트 Tap이 잘 일어납니다. isCircle : \(isCircle)")
-        
+
         // -------- 기능 부분 ---------
-        let animator = UIViewPropertyAnimator(duration: 1.0, curve: .easeInOut) { [weak self] in
-            self?.update()
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.updateUIView()
+            self?.updateButton() // 적용 안됨.
         }
-        animator.startAnimation()
     }
     
     // ** MARK: Tap 이벤트 발생 시 업데이트 함수
-    private func update() {
+    private func updateUIView() {
         if isCircle {
             globalUIView.layer.cornerRadius = 25
             globalUIView.backgroundColor = .systemRed
+            platformAdaptorNavigationStyle(foregroundColor: .white, backgroundColor: .black)
             self.view.backgroundColor = .black
-            globalButton.configuration?.baseBackgroundColor = .systemRed
-            
-            platformAdaptorNavigationStyle(foregroundColor: UIColor.white, backgroundColor: UIColor.black)
         }else {
             globalUIView.layer.cornerRadius = 8
             globalUIView.backgroundColor = .systemBlue
+            platformAdaptorNavigationStyle(foregroundColor: .black, backgroundColor: .white)
             self.view.backgroundColor = .white
+        }
+    }
+    // ** MARK: Button 함수
+    private func updateButton() {
+        if isCircle {
+            globalButton.configuration?.baseBackgroundColor = .systemRed
+        }else {
             globalButton.configuration?.baseBackgroundColor = .systemBlue
-
-            platformAdaptorNavigationStyle(foregroundColor: UIColor.black, backgroundColor: UIColor.white)
         }
     }
     
     // ** MARK: IOS 15 이상의 경우와 아닌 경우를 분리하는 함수
     private func platformAdaptorNavigationStyle(foregroundColor: UIColor, backgroundColor: UIColor) {
-        if #available(iOS 15.0, *) {
-            let appearence = UINavigationBarAppearance()
-            appearence.backgroundColor = backgroundColor // default 색상이 회색이라 검은색 줬습니다.
-            appearence.titleTextAttributes = [.foregroundColor : foregroundColor]
-            navigationController?.navigationBar.standardAppearance = appearence
-            navigationController?.navigationBar.scrollEdgeAppearance = appearence
-        }else {
-            navigationController?.navigationBar.titleTextAttributes = [
-                .foregroundColor : foregroundColor,
-            ]
-        }
+        appearence.titleTextAttributes = [.foregroundColor : foregroundColor]
+        navigationController?.navigationBar.standardAppearance = appearence
+        navigationController?.navigationBar.scrollEdgeAppearance = appearence
     }
 }
 
@@ -160,4 +159,14 @@ final class YonghaeUIView: UIViewController {
 /// 흠 결국엔 Animation의 시간과 뷰의 렌더링되는 시간이 서로 다르기에 애니메이션이 변하는 동안 NavigationItem 부분은 이미 더 빨리 바뀌고 있는 모습이다. ㅠ
 ///
 /// animate의 completion에 넣으면 반대로 NavigationItem 쪽이 더 느려지는 모습이보입니다. 결국 2개의 애니메이션 시간을 일치 시켜야 하는 작업이 필요해 보입니다 :(
+///
+/// ** MARK: 회고 (3월 18일)
+/// 제가 원하는 animation은 NavigationBar의 배경색 , 버튼 색상 , UIView 색상 이 동시에 시작해서 동시에 마무리 되는 animation을 원하는데 문제는 UIView.animate는 UIView만 제어하고 있었습니다.. ㅠ 다른 방법을 찾아봐야 할거 같습니다
+/// UIViewPropertyAnimator 이름에서도 알 수 있듯이 이 녀석도 똑같은 놈입니다..
+///
+/// Navigation의 background를 투명하게 해서 직접 지정하는 빙식이 아닌 UIView.animate가 실행이 되면 바뀌게 하는게 더 좋은 방식인 거 같습니다 :)
+///
+/// 이제 Button은 configuration의 baseBackgroundColor는 UIView의 프로퍼티가 아니기 때문에 UIView.animate가 되지 않습니다
+/// 다른 방식으로의 접근이 필요합니다
+///
 
