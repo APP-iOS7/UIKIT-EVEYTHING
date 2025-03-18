@@ -44,9 +44,9 @@ class YonghaeUIImageController: UIViewController {
     private func setUpStackView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
+        stackView.spacing = 20
+        
         scrollView.addSubview(stackView)
         self.view.addSubview(scrollView)
 
@@ -62,14 +62,13 @@ class YonghaeUIImageController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
         ])
     }
 
     // MARK: 첫번째 도형 레이아웃
     private func setUpFirst() {
         let label: UILabel = UILabel()
-        label.text = "1. 도형 모먕"
+        label.text = "1. 도형 모양"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 24)
 
@@ -92,9 +91,6 @@ class YonghaeUIImageController: UIViewController {
         stackView.addArrangedSubview(firstStackView)
         
         NSLayoutConstraint.activate([
-            // 라벨
-            label.topAnchor.constraint(equalTo: stackView.safeAreaLayoutGuide.topAnchor, constant: 10),
-            label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             // 첫번째 stackView Row
             firstStackView.topAnchor.constraint(equalTo: label.bottomAnchor),
             firstStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
