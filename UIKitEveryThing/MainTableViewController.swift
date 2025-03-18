@@ -14,7 +14,9 @@ class MainTableViewController: UITableViewController {
         ListTile(title: "Branch Yonghae : UIView", route: YonghaeUIView(receivedTitle: "UIView")),
         ListTile(title: "UITest", route: UILabelViewController()),
         ListTile(title: "ImageView", route: UIImageViewController()),
-        ListTile(title: "Yonghae UIImageDemo", route: YonghaeUIImageController())
+        ListTile(title: "Yonghae UIImageDemo", route: YonghaeUIImageController()),
+        ListTile(title: "Open Link", route: LinkViewController())
+        
     ]
     
     override func viewDidLoad() {
