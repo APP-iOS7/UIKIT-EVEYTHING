@@ -22,11 +22,10 @@ final class YonghaeUIView: UIViewController {
     private lazy var globalButton: UIButton = {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        var config = UIButton.Configuration.filled()
         button.layer.cornerRadius = 12
-        config.title = "동시에 바뀌는가.."
-        config.baseBackgroundColor = .systemBlue
-        button.configuration = config
+        button.setTitle("None Configuration", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
         
         return button
     }() // 전역 UIButton
@@ -78,7 +77,7 @@ final class YonghaeUIView: UIViewController {
 
         // -------- 기능 부분 ---------
         
-        UIView.animate(withDuration: 0.3) { [weak self] in
+        UIView.animate(withDuration: 0.5) { [weak self] in
             self?.updateUIView()
             self?.updateButton() // 적용 안됨.
         }
@@ -101,9 +100,9 @@ final class YonghaeUIView: UIViewController {
     // ** MARK: Button 함수
     private func updateButton() {
         if isCircle {
-            globalButton.configuration?.baseBackgroundColor = .systemRed
+            globalButton.backgroundColor = .systemRed
         }else {
-            globalButton.configuration?.baseBackgroundColor = .systemBlue
+            globalButton.backgroundColor = .systemBlue
         }
     }
     
@@ -168,5 +167,10 @@ final class YonghaeUIView: UIViewController {
 ///
 /// 이제 Button은 configuration의 baseBackgroundColor는 UIView의 프로퍼티가 아니기 때문에 UIView.animate가 되지 않습니다
 /// 다른 방식으로의 접근이 필요합니다
+/// ** MARK: 3월 18일 저녘 10시
+/// 드디어 비밀을 풀었습니다..
+/// baseBackground의 상세 정보를 확인해보니 변하지 않는 색상이라고도 되있고 animation적용이 안되더라구요
 ///
+/// 그래서 setTitle 과 setTintColor를 사용해서  버튼을 만들고 배경색을 backgroundColor로 주면
+/// UIView가 가지고 있는 프로퍼티 이므로 Animation 동작을 일으킬 수 있습니다 !!!
 
