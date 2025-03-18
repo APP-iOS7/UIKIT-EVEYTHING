@@ -66,7 +66,7 @@ private extension UIGestureViewController {
 }
 
 // Set up Gesture
-extension UIGestureViewController {
+extension UIGestureViewController: UIGestureRecognizerDelegate {
     func setupGesture() {
         guard let rect = view.subviews.first else { return }
         
@@ -84,7 +84,22 @@ extension UIGestureViewController {
         
         let pinchGesture = UIPinchGestureRecognizer()
         pinchGesture.addTarget(self, action: #selector(pinchDidExecuted))
+        
+        let rotationGesture = UIRotationGestureRecognizer()
+        rotationGesture.addTarget(self, action: #selector(rotationGestureExecuted))
+
+        
+        let penGesture = UIPanGestureRecognizer()
+        penGesture.addTarget(self, action: #selector(penGestureDidExecute))
+        
+        tapGesture.delegate = self
+        doubleTapGestures.delegate = self
+        pinchGesture.delegate = self
+        penGesture.delegate = self
+        
         star.addGestureRecognizer(pinchGesture)
+        star.addGestureRecognizer(rotationGesture)
+        star.addGestureRecognizer(penGesture)
     }
     
     @objc func handleTapGesture() {
@@ -100,6 +115,23 @@ extension UIGestureViewController {
         guard let view = gesture.view else { return }
         view.transform = view.transform.scaledBy(x: gesture.scale, y: gesture.scale)
         gesture.scale = 1.0
+    }
+    
+    @objc func rotationGestureExecuted(_ gesture: UIRotationGestureRecognizer) {
+        guard let view = gesture.view else { return }
+        view.transform = view.transform.rotated(by: gesture.rotation)
+        gesture.rotation = 0
+    }
+    
+    @objc func penGestureDidExecute(_ gesture: UIPanGestureRecognizer) {
+        guard let view = gesture.view else { return }
+        view.center.x += gesture.translation(in: nil).x
+        view.center.y += gesture.translation(in: nil).y
+        gesture.setTranslation(.zero, in: nil)
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
     }
 }
 
