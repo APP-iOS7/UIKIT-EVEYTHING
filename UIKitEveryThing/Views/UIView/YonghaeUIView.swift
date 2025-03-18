@@ -17,8 +17,18 @@ final class YonghaeUIView: UIViewController {
         uiView.backgroundColor = .systemBlue
         uiView.layer.cornerRadius = 8
         return uiView
-    }()
-    
+    }() // 전역 UIView
+    private lazy var globalButton: UIButton = {
+        let button: UIButton = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        var config = UIButton.Configuration.filled()
+        button.layer.cornerRadius = 12
+        config.title = "동시에 바뀌는가.."
+        config.baseBackgroundColor = .systemBlue
+        button.configuration = config
+        
+        return button
+    }() // 전역 UIButton
     init(receivedTitle: String) {
         self.receivedTitle = receivedTitle
         super.init(nibName: nil, bundle: nil)
@@ -45,24 +55,30 @@ final class YonghaeUIView: UIViewController {
     private func setUpUIView() {
         globalUIView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler)))
         self.view.addSubview(globalUIView)
-        
+        self.view.addSubview(globalButton)
         NSLayoutConstraint.activate([
             globalUIView.widthAnchor.constraint(equalToConstant: 50),
             globalUIView.heightAnchor.constraint(equalToConstant: 50),
             globalUIView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            globalUIView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            globalUIView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            
+            globalButton.widthAnchor.constraint(equalToConstant: 200),
+            globalButton.heightAnchor.constraint(equalToConstant: 50),
+            globalButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            globalButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 100)
         ])
     }
     
-    // ** MARK: TapGesture 핸들러 함수
+    // ** MARK: TapGesture 핸들러 함수 .. 애니메이션의 시간이 왜 다 다르죠? 네 끝나는 시간도 맞추고 싶어요
     @objc private func tapHandler() {
         isCircle.toggle()
         print("UIView를 누르면 이벤트 Tap이 잘 일어납니다. isCircle : \(isCircle)")
         
         // -------- 기능 부분 ---------
-        UIView.animate(withDuration: 0.3, animations: { [ weak self ] in
-            self?.update() // 클릭시 업데이트 되는 함수
-        })
+        let animator = UIViewPropertyAnimator(duration: 1.0, curve: .easeInOut) { [weak self] in
+            self?.update()
+        }
+        animator.startAnimation()
     }
     
     // ** MARK: Tap 이벤트 발생 시 업데이트 함수
@@ -71,11 +87,15 @@ final class YonghaeUIView: UIViewController {
             globalUIView.layer.cornerRadius = 25
             globalUIView.backgroundColor = .systemRed
             self.view.backgroundColor = .black
+            globalButton.configuration?.baseBackgroundColor = .systemRed
+            
             platformAdaptorNavigationStyle(foregroundColor: UIColor.white, backgroundColor: UIColor.black)
         }else {
             globalUIView.layer.cornerRadius = 8
             globalUIView.backgroundColor = .systemBlue
             self.view.backgroundColor = .white
+            globalButton.configuration?.baseBackgroundColor = .systemBlue
+
             platformAdaptorNavigationStyle(foregroundColor: UIColor.black, backgroundColor: UIColor.white)
         }
     }
@@ -96,6 +116,9 @@ final class YonghaeUIView: UIViewController {
     }
 }
 
+#Preview {
+    YonghaeUIView(receivedTitle: "test")
+}
 
 
 ///** MARK: 회고( 3월 16일 )
