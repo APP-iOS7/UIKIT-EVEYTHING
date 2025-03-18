@@ -49,52 +49,75 @@ extension UIGestureViewController {
 // Set up Gesture
 extension UIGestureViewController {
     func setupGesture() {
+        guard let rect = view.subviews.first else { return }
+        
         let tapGesture = UITapGestureRecognizer()
         tapGesture.addTarget(self, action: #selector(handleTapGesture))
         tapGesture.numberOfTapsRequired = 1
         tapGesture.numberOfTouchesRequired = 1
-        rectangular.addGestureRecognizer(tapGesture) // perfcet~
+        
+        let doubleTapGestures = UITapGestureRecognizer()
+        doubleTapGestures.numberOfTapsRequired = 2
+        doubleTapGestures.numberOfTouchesRequired = 1
+        doubleTapGestures.addTarget(self, action: #selector(handleDoubleTapGesture))
+        rect.addGestureRecognizer(tapGesture)
+        rect.addGestureRecognizer(doubleTapGestures)
     }
     
     @objc func handleTapGesture() {
         print("Tapped")
+        dump(self.view.subviews)
+    }
+    
+    @objc func handleDoubleTapGesture() {
+        print("Double Tapped")
     }
 }
 
 
 private class ViewController: UIViewController {
+    let RECTANGLE_VIEW_TAG = 1000
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+    override func viewDidLoad() {
+      super.viewDidLoad()
 
-    setupUI()
-    setupGesture()
+      setupUI()
+      setupGesture()
+    }
+
+    func setupUI() {
+      let rectangle = UIView()
+      rectangle.backgroundColor = .yellow
+      rectangle.translatesAutoresizingMaskIntoConstraints = false
+      rectangle.tag = RECTANGLE_VIEW_TAG
+      view.addSubview(rectangle)
+
+      NSLayoutConstraint.activate([
+        rectangle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+        rectangle.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 100),
+        rectangle.widthAnchor.constraint(equalToConstant: 175),
+        rectangle.heightAnchor.constraint(equalToConstant: 125)
+      ])
+    }
+
+    func setupGesture() {
+      print("subviews count: \(view.subviews.count)")
+      guard let rectangle = view.subviews.first(where: { $0.tag == RECTANGLE_VIEW_TAG }) else {
+        return
+      }
+      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
+      tapGesture.numberOfTapsRequired = 2 // 더블 탭
+      tapGesture.numberOfTouchesRequired = 1 // 한 손가락
+      rectangle.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func handleTapGesture() {
+      print("더블 탭 제스처 인식")
+    }
+
   }
 
-  func setupUI() {
-    let rectangle = UIView()
-    rectangle.backgroundColor = .yellow
-    rectangle.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(rectangle)
-
-    NSLayoutConstraint.activate([
-      rectangle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-      rectangle.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 100),
-      rectangle.widthAnchor.constraint(equalToConstant: 175),
-      rectangle.heightAnchor.constraint(equalToConstant: 125)
-    ])
+  #Preview {
+    ViewController()
   }
-
-  func setupGesture() {
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
-    tapGesture.numberOfTapsRequired = 2 // 더블 탭
-    tapGesture.numberOfTouchesRequired = 1 // 한 손가락
-    view.addGestureRecognizer(tapGesture)
-  }
-
-  @objc func handleTapGesture() {
-    print("더블 탭 제스처 인식")
-  }
-
-}
 
