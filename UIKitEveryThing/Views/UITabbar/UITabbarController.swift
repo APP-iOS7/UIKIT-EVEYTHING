@@ -30,3 +30,18 @@ private extension UITabbarController {
         self.tabBar.standardAppearance = appearance
     }
 }
+
+class TomDataSingleton {
+    static let shared = TomDataSingleton() // singleton instanse create
+//    static let dataChangeNotification =  
+    
+    private init() {} // make init private
+    
+    var data: String = ""
+    
+    func updateData(newData: String) {
+        data = newData
+    }
+    
+    
+}

@@ -7,7 +7,7 @@
 
 import UIKit
 
-private class UITabbarFirstViewController: UIViewController {
+class UITabbarFirstViewController: UIViewController {
 
      let mainLabel: UILabel = {
         let label = UILabel()
