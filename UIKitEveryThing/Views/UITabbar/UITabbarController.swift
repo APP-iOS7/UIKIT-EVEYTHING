@@ -12,36 +12,20 @@ class UITabbarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabbar()
-        view.backgroundColor = .systemBackground
     }
 }
 
 extension UITabbarController {
     func setupTabbar() {
-        let appearance = UITabBarAppearance()
-        appearance.configureWithDefaultBackground()
-
-        let firstTab = UITabBarItem(
-            title: "first",
-            image: UIImage(systemName: "star"),
-            selectedImage: UIImage(systemName: "star.fill")
-        )
-        
-        let secondTab = UITabBarItem(
-            title: "second",
-            image: UIImage(systemName: "star"),
-            selectedImage: UIImage(systemName: "star.fill")
-        )
-
+        let firstTabItem = UITabBarItem(title: "First", image: UIImage(systemName: "star"), tag: 2000)
+        let secondTabItem = UITabBarItem(tabBarSystemItem: .featured, tag: 2001)
         let firstNC = UINavigationController(rootViewController: UITabbarFirstViewController())
         let secondNC = UINavigationController(rootViewController: UITabbarSecondViewController())
-
-        firstNC.tabBarItem = firstTab
-        secondNC.tabBarItem = secondTab
-
-        self.tabBar.standardAppearance = appearance
-        self.tabBar.scrollEdgeAppearance = appearance
-
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        firstNC.tabBarItem = firstTabItem
+        secondNC.tabBarItem = secondTabItem
         self.viewControllers = [firstNC, secondNC]
+        self.tabBar.standardAppearance = appearance
     }
 }
