@@ -15,7 +15,7 @@ class UITabbarController: UITabBarController {
     }
 }
 
-extension UITabbarController {
+private extension UITabbarController {
     func setupTabbar() {
         let firstTabItem = UITabBarItem(
             title: "First", image: UIImage(systemName: "star"), tag: 2000)

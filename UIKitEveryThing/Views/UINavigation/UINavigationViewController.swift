@@ -9,15 +9,14 @@ import UIKit
 
 class UINavigationViewController: UIViewController {
 
+    private var originalState: [String: Any] = [:]
+    private var originalIsTranslucent: Bool?
     private let navigationBarKeys = [
         "barStyle",
         "tintColor",
         "prefersLargeTitles",
         "titleTextAttributes",
     ]
-
-    private var originalState: [String: Any] = [:]
-    private var originalIsTranslucent: Bool?
 
     override func viewDidLoad() {
         print("1️⃣ viewDidLoad")

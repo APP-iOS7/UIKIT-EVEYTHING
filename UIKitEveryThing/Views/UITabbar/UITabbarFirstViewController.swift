@@ -7,9 +7,9 @@
 
 import UIKit
 
-class UITabbarFirstViewController: UIViewController {
+private class UITabbarFirstViewController: UIViewController {
 
-    private let mainLabel: UILabel = {
+     let mainLabel: UILabel = {
         let label = UILabel()
         label.text = "첫 번째 탭"
         label.font = .systemFont(ofSize: 24, weight: .bold)
@@ -25,7 +25,7 @@ class UITabbarFirstViewController: UIViewController {
         setupUI()
     }
 
-    private func setupUI() {
+    func setupUI() {
         view.addSubview(mainLabel)
 
         NSLayoutConstraint.activate([
