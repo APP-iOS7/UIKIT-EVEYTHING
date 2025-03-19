@@ -24,12 +24,21 @@ class YonghaeTodoTableView: UITableViewController {
         print("Table 쪽 Todos : \(todos)")
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TodoCell")
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTodos), name: Notification.Name("updateTodo"), object: nil)
     }
     
-    // MARK: 투두 업데이트 함수
-    func updateTodos(newTodos: [String]) {
-        self.todos = newTodos
-        tableView.reloadData()
+    // MARK: 알림 이벤트 옵저버
+    @objc func updateTodos(_ notification: Notification) {
+        if let userinfo = notification.userInfo, let data = userinfo["todos"] as? [String] {
+            todos = data
+            tableView.reloadData()
+            print("todos : \(todos)")
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(Notification.Name("updateTodo"))
     }
 }
 
@@ -45,12 +54,18 @@ extension YonghaeTodoTableView {
 
         var config = UIListContentConfiguration.subtitleCell()
         config.text = todos[indexPath.row]
+        cell.insetsLayoutMarginsFromSafeArea = true
+        cell.translatesAutoresizingMaskIntoConstraints = false
         cell.contentConfiguration = config
         
         return cell
     }
+    // Row : 높이 조절
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
 }
 
 #Preview {
-    UINavigationController(rootViewController: YonghaeTodoTableView(todos: []))
+    UINavigationController(rootViewController: YonghaeTodoTableView(todos: ["123", "456","789"]))
 }
