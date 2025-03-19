@@ -20,6 +20,8 @@ class MainTableViewController: UITableViewController {
         ListTile(title: "UINavigationBar", route: UINavigationViewController()),
         ListTile(title: "UITabbarController", route: UITabbarController()),
         ListTile(title: "YONGHAE-TODO", route: YonghaeTodoList()),
+        ListTile(title: "NotiEx", route: NotificationCenterMainViewController()),
+        
     ]
 
     override func viewDidLoad() {

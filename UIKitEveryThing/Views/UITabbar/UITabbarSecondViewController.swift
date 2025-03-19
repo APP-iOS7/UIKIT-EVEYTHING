@@ -71,3 +71,5 @@ class UITabbarSecondViewController: UIViewController {
         subLabel.text = TomDataSingleton.shared.data
     }
 }
+
+
