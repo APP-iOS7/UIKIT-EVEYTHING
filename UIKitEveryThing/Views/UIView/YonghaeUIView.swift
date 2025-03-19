@@ -44,6 +44,26 @@ final class YonghaeUIView: UIViewController {
         setUpUIView() // uiView 세팅
     }
     
+    // MARK: 다시 들어갈 때 isCircle인 경우 글자색 사라짐 이슈
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if isCircle {
+            appearence.titleTextAttributes = [.foregroundColor : UIColor.white]
+            navigationController?.navigationBar.standardAppearance = appearence
+            navigationController?.navigationBar.scrollEdgeAppearance = appearence
+        }
+    }
+    
+    // MARK: 생명주기 뒤로갈때 Navigation 색상 되돌리기 위함.
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isCircle {
+            appearence.titleTextAttributes = [.foregroundColor : UIColor.black]
+            navigationController?.navigationBar.standardAppearance = appearence
+            navigationController?.navigationBar.scrollEdgeAppearance = appearence
+        }
+    }
+    
     // ** MARK: 초기 YonghaeUIView 설정
     private func setUpUI() {
         // 제목 설정
@@ -77,10 +97,11 @@ final class YonghaeUIView: UIViewController {
 
         // -------- 기능 부분 ---------
         
-        UIView.animate(withDuration: 0.5) { [weak self] in
+        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut){ [weak self] in
             self?.updateUIView()
             self?.updateButton() // 적용 안됨.
         }
+        animator.startAnimation()
     }
     
     // ** MARK: Tap 이벤트 발생 시 업데이트 함수
@@ -88,12 +109,12 @@ final class YonghaeUIView: UIViewController {
         if isCircle {
             globalUIView.layer.cornerRadius = 25
             globalUIView.backgroundColor = .systemRed
-            platformAdaptorNavigationStyle(foregroundColor: .white, backgroundColor: .black)
+            platformAdaptorNavigationStyle(foregroundColor: .white)
             self.view.backgroundColor = .black
         }else {
             globalUIView.layer.cornerRadius = 8
             globalUIView.backgroundColor = .systemBlue
-            platformAdaptorNavigationStyle(foregroundColor: .black, backgroundColor: .white)
+            platformAdaptorNavigationStyle(foregroundColor: .black)
             self.view.backgroundColor = .white
         }
     }
@@ -107,7 +128,7 @@ final class YonghaeUIView: UIViewController {
     }
     
     // ** MARK: IOS 15 이상의 경우와 아닌 경우를 분리하는 함수
-    private func platformAdaptorNavigationStyle(foregroundColor: UIColor, backgroundColor: UIColor) {
+    private func platformAdaptorNavigationStyle(foregroundColor: UIColor) {
         appearence.titleTextAttributes = [.foregroundColor : foregroundColor]
         navigationController?.navigationBar.standardAppearance = appearence
         navigationController?.navigationBar.scrollEdgeAppearance = appearence
