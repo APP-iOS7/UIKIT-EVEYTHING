@@ -20,6 +20,13 @@ class UITabbarViewController: UIViewController {
 
 extension UITabbarViewController {
     func setupTabbar() {
+        let appearance = UITabBarAppearance()
+        appearance.backgroundColor = .darkGray
+        
+        let tabbarController = UITabBarController()
+        tabbarController.tabBar.standardAppearance = appearance
+        
+        self.set
         
     }
 }
