@@ -17,7 +17,8 @@ class UITabbarController: UITabBarController {
 
 extension UITabbarController {
     func setupTabbar() {
-        let firstTabItem = UITabBarItem(title: "First", image: UIImage(systemName: "star"), tag: 2000)
+        let firstTabItem = UITabBarItem(
+            title: "First", image: UIImage(systemName: "star"), tag: 2000)
         let secondTabItem = UITabBarItem(tabBarSystemItem: .featured, tag: 2001)
         let firstNC = UINavigationController(rootViewController: UITabbarFirstViewController())
         let secondNC = UINavigationController(rootViewController: UITabbarSecondViewController())
