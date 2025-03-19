@@ -18,7 +18,7 @@ class MainTableViewController: UITableViewController {
         ListTile(title: "Open Link", route: LinkViewController()),
         ListTile(title: "UIGesture", route: UIGestureViewController()),
         ListTile(title: "UINavigationBar", route: UINavigationViewController()),
-        ListTile(title: "UITabbarViewController", route: UITabbarViewController())
+        ListTile(title: "UITabbarController", route: UITabbarController()),
     ]
 
     override func viewDidLoad() {
