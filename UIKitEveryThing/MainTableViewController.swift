@@ -19,6 +19,7 @@ class MainTableViewController: UITableViewController {
         ListTile(title: "UIGesture", route: UIGestureViewController()),
         ListTile(title: "UINavigationBar", route: UINavigationViewController()),
         ListTile(title: "UITabbarController", route: UITabbarController()),
+        ListTile(title: "YONGHAE-TODO", route: YonghaeTodoList()),
     ]
 
     override func viewDidLoad() {
