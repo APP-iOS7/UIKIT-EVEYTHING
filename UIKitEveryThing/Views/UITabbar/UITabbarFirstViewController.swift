@@ -26,7 +26,7 @@ class UITabbarFirstViewController: UIViewController {
     }()
 
     func sendMessage() {
-        
+        TomDataSingleton.shared.updateData(newData: "엤다 가져가라")
     }
     
     override func viewDidLoad() {

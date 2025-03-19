@@ -33,11 +33,20 @@ class UITabbarSecondViewController: UIViewController {
         return label
     }()
 
+    private var observer: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
         setupUI()
+        setupObserver()
+    }
+    
+    deinit {
+        if let observer {
+            NotificationCenter.default.removeObserver(self)
+        }
     }
 
     private func setupUI() {
@@ -51,5 +60,14 @@ class UITabbarSecondViewController: UIViewController {
         ])
     }
 
-
+    private func setupObserver() {
+        NotificationCenter.default.addObserver(forName: TomDataSingleton.dataChangeNotification, object: nil, queue: .main) { [weak self] noti in
+            print(noti)
+            self?.updateLabel()
+        }
+    }
+    
+    func updateLabel() {
+        subLabel.text = TomDataSingleton.shared.data
+    }
 }
