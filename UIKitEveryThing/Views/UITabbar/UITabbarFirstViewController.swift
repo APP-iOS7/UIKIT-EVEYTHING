@@ -17,16 +17,32 @@ class UITabbarFirstViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    let button: UIButton = {
+        let button = UIButton(configuration: .filled())
+        button.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
+        button.setTitle("받아라 친구야", for: .normal)
+        return button
+    }()
 
+    func sendMessage() {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
         setupUI()
+        button.addAction(UIAction(handler: { [weak self] action in
+            print("action: \(action)")
+            self?.sendMessage()
+        }), for: .touchUpInside)
     }
 
     func setupUI() {
         view.addSubview(mainLabel)
+        view.addSubview(button)
 
         NSLayoutConstraint.activate([
             mainLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
