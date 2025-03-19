@@ -7,9 +7,6 @@
 
 import UIKit
 
-
-
-
 class YonghaeTodoList: UIViewController{
     // 전역 클로저 즉시 실행 함수
     lazy var textField: UITextField = {
@@ -57,6 +54,7 @@ class YonghaeTodoList: UIViewController{
         // 이벤트
         todoSubmit(rightButton: rightButton)
         
+        textField.delegate = self
         textField.rightView = rightButton
         textField.rightViewMode = .always
         self.view.addSubview(textField)
@@ -76,7 +74,6 @@ class YonghaeTodoList: UIViewController{
         todoTable = YonghaeTodoTableView(todos: todoData)
         self.addChild(todoTable)
         todoTable.view.translatesAutoresizingMaskIntoConstraints = false
-        todoTable.view.layer.cornerRadius = 12
         todoTable.view.backgroundColor = .none
         self.view.addSubview(todoTable.view)
         
@@ -94,17 +91,24 @@ class YonghaeTodoList: UIViewController{
             print("todo : \(self.textField.text ?? "")")
             self.todoData.append(self.textField.text ?? "값이 없어유")
             self.textField.text = ""
-            self.todoTable.updateTodos(newTodos: self.todoData)
+            NotificationCenter.default.post(name: Notification.Name("updateTodo"), object: nil, userInfo: ["todos" : self.todoData])
         }, for: .touchUpInside)
     }
 }
 
 
-// 여기서만 쓰는 확장
+// MARK: 여기서만 쓰는 확장
 private extension YonghaeTodoList {
     // ** 색상 바꿔주는 함수
     func convertHexColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         UIColor(red: red/255, green: green / 255, blue: blue / 255, alpha: 1.0)
+    }
+}
+
+// MARK: TextField Delegate 확장
+extension YonghaeTodoList: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return true
     }
 }
 
@@ -133,3 +137,7 @@ private extension YonghaeTodoList {
 ///  1. 문제점 data 관리
 ///  현재는 data를 관리하기보단 TableViewController에 todos 전체를 todo가 들어갈 때마다 업데이트를 하고 있다...
 ///  굉장히 문제가 많지만 솔직히 아직 delegate 패턴이나 컴바인이 헷갈리기 때문에 차근차근 공부합시다...
+///
+///  1. 데이터 이동 방식을 Notification으로 바꿨지만 여전히 데이터는 변하지만 뷰의 업데이트를 할려면 reload해야합니다.. ㅠㅠ
+///  2. textField또한 문제가 있음.. TableView는 자체적으로 scrollView가 있어서 괜찮을 줄 알았는데... 키보드가 올라오는걸 막고 있다...
+///   ----- 3월 20일----
