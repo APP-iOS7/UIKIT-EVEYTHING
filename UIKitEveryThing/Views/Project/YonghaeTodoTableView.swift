@@ -8,40 +8,31 @@
 import UIKit
 
 class YonghaeTodoTableView: UITableViewController {
-    var todos: [String] // 데이터 받아오기
-    
-    // 생성자
-    init(todos: [String]) {
-        self.todos = todos
-        super.init(nibName: nil, bundle: nil)
-    }
-    required init?(coder: NSCoder) {
-        fatalError("어차피 안써요~")
-    }
+    var todos: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Table 쪽 Todos : \(todos)")
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TodoCell")
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTodos), name: Notification.Name("updateTodo"), object: nil)
+        // 이벤트 수신
+        NotificationCenter.default.addObserver(self, selector: #selector(createTodos), name: Notification.Name("createTodos"), object: nil)
     }
     
-    // MARK: 알림 이벤트 옵저버
-    @objc func updateTodos(_ notification: Notification) {
-        if let userinfo = notification.userInfo, let data = userinfo["todos"] as? [String] {
-            todos = data
+    // MARK: 알림 이벤트 옵저버 Create
+    @objc func createTodos(_ notification: Notification) {
+        if let userinfo = notification.userInfo, let data = userinfo["todo"] as? String {
+            todos.append(data)
             tableView.reloadData()
             print("todos : \(todos)")
         }
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(Notification.Name("updateTodo"))
+        NotificationCenter.default.removeObserver(Notification.Name("createTodos"))
     }
 }
-
+// MARK: delegate 확장
 extension YonghaeTodoTableView {
     // MARK: Row의 개수
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,8 +55,26 @@ extension YonghaeTodoTableView {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // 삭제 스와이프
+            let todo: String = todos[indexPath.row]
+            let filterTodos = todos.filter{ $0 != todo } // 일치하지 않는 todo 전부 가져오기
+            deleteTodo(filterTodos: filterTodos) // Delete 함수
+        }
+    }
+}
+
+// MARK: child View 테이블 확장
+extension YonghaeTodoTableView {
+    // MARK: 해당 투두를 제거하는 함수 (DELETE)
+    func deleteTodo(filterTodos: [String]) {
+        todos = filterTodos // 소매 넣기
+        tableView.reloadData() // 업데이트
+    }
 }
 
 #Preview {
-    UINavigationController(rootViewController: YonghaeTodoTableView(todos: ["123", "456","789"]))
+    UINavigationController(rootViewController: YonghaeTodoTableView())
 }
