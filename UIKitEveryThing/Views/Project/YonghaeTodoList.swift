@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class YonghaeTodoList: UIViewController{
     // 전역 클로저 즉시 실행 함수
@@ -21,6 +22,10 @@ class YonghaeTodoList: UIViewController{
         return field
     }()
     private var todoTable: YonghaeTodoTableView!
+    private var persistentContainer = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+    private var viewContext: NSManagedObjectContext {
+        persistentContainer.viewContext
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
