@@ -16,16 +16,12 @@ class YonghaeTodoList: UIViewController{
         field.placeholder = "Todo를 만들어 봅시다"
         field.layer.cornerRadius = 8
         field.borderStyle = UITextField.BorderStyle.roundedRect
-        field.backgroundColor = convertHexColor(red: 240, green: 147, blue: 25)
-        field.tintColor = convertHexColor(red: 171, green: 186, blue: 124)
-        field.textColor = convertHexColor(red: 61, green: 83, blue: 0)
+        field.backgroundColor = UIColor.convertHexColor(red: 240, green: 147, blue: 25)
+        field.tintColor = UIColor.convertHexColor(red: 171, green: 186, blue: 124)
+        field.textColor = UIColor.convertHexColor(red: 61, green: 83, blue: 0)
         return field
     }()
     private var todoTable: YonghaeTodoTableView!
-    private var persistentContainer = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
-    private var viewContext: NSManagedObjectContext {
-        persistentContainer.viewContext
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -37,7 +33,7 @@ class YonghaeTodoList: UIViewController{
         self.view.backgroundColor = .systemYellow
         navigationItem.title = "YONGHAE-TODO"
         let appearance: UINavigationBarAppearance = UINavigationBarAppearance()
-        appearance.titleTextAttributes = [.foregroundColor : convertHexColor(red: 61, green: 83, blue: 0)]
+        appearance.titleTextAttributes = [.foregroundColor : UIColor.convertHexColor(red: 100, green: 13, blue: 95)]
         appearance.configureWithTransparentBackground()
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
@@ -93,11 +89,6 @@ class YonghaeTodoList: UIViewController{
 
 // MARK: 여기서만 쓰는 확장
 private extension YonghaeTodoList {
-    // MARK: 색상 바꿔주는 함수
-    func convertHexColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
-        UIColor(red: red/255, green: green / 255, blue: blue / 255, alpha: 1.0)
-    }
-    
     // MARK: todo를 만드는 버튼Action (CREATE)
     private func todoSubmit(rightButton: UIButton) {
         rightButton.addAction(UIAction {_ in
@@ -123,6 +114,14 @@ extension YonghaeTodoList: UITextFieldDelegate {
     }
 }
 
+
+// MARK: 커스텀 색상 확장
+extension UIColor {
+    // MARK: 색상 바꿔주는 함수
+    static func convertHexColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
+        UIColor(red: red/255, green: green / 255, blue: blue / 255, alpha: 1.0)
+    }
+}
 
 #Preview {
     UINavigationController(rootViewController: YonghaeTodoList())
