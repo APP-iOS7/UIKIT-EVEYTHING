@@ -1,7 +1,7 @@
 import UIKit
 
-// 택배 정보 구조체
-struct DeliveryInfo: Equatable {
+// 택배 정보 class
+class DeliveryInfo {
     let trackingNumber: String
     let sender: String
     let receiver: String
@@ -136,7 +136,7 @@ class NotiWithDeliveryViewController: UIViewController {
         if let deliveryInfo = notification.object as? DeliveryInfo {
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .medium
-            dateFormatter.timeStyle = .medium
+            dateFormatter.timeStyle = .short
 
             print(
                 "🟣 [NotiWithDeliveryViewController] 배송 상태 업데이트 수신 - 운송장번호: \(deliveryInfo.trackingNumber), 상태: \(deliveryInfo.status.rawValue)"
