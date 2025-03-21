@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class YonghaeTodoList: UIViewController{
     // 전역 클로저 즉시 실행 함수
@@ -15,12 +16,11 @@ class YonghaeTodoList: UIViewController{
         field.placeholder = "Todo를 만들어 봅시다"
         field.layer.cornerRadius = 8
         field.borderStyle = UITextField.BorderStyle.roundedRect
-        field.backgroundColor = convertHexColor(red: 240, green: 147, blue: 25)
-        field.tintColor = convertHexColor(red: 171, green: 186, blue: 124)
-        field.textColor = convertHexColor(red: 61, green: 83, blue: 0)
+        field.backgroundColor = UIColor.convertHexColor(red: 240, green: 147, blue: 25)
+        field.tintColor = UIColor.convertHexColor(red: 171, green: 186, blue: 124)
+        field.textColor = UIColor.convertHexColor(red: 61, green: 83, blue: 0)
         return field
     }()
-    private var todoData: [String] = []
     private var todoTable: YonghaeTodoTableView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ class YonghaeTodoList: UIViewController{
         self.view.backgroundColor = .systemYellow
         navigationItem.title = "YONGHAE-TODO"
         let appearance: UINavigationBarAppearance = UINavigationBarAppearance()
-        appearance.titleTextAttributes = [.foregroundColor : convertHexColor(red: 61, green: 83, blue: 0)]
+        appearance.titleTextAttributes = [.foregroundColor : UIColor.convertHexColor(red: 100, green: 13, blue: 95)]
         appearance.configureWithTransparentBackground()
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
@@ -69,9 +69,9 @@ class YonghaeTodoList: UIViewController{
         ])
     }
     
-    // MARK: Todos 영역 UITableViewController
+    // MARK: UITableViewController 뷰 제어
     private func setUpTableView() {
-        todoTable = YonghaeTodoTableView(todos: todoData)
+        todoTable = YonghaeTodoTableView()
         self.addChild(todoTable)
         todoTable.view.translatesAutoresizingMaskIntoConstraints = false
         todoTable.view.backgroundColor = .none
@@ -84,24 +84,21 @@ class YonghaeTodoList: UIViewController{
             todoTable.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
     }
-    
-    // MARK: todo를 만드는 버튼 Action!!
-    private func todoSubmit(rightButton: UIButton) {
-        rightButton.addAction(UIAction {_ in
-            print("todo : \(self.textField.text ?? "")")
-            self.todoData.append(self.textField.text ?? "값이 없어유")
-            self.textField.text = ""
-            NotificationCenter.default.post(name: Notification.Name("updateTodo"), object: nil, userInfo: ["todos" : self.todoData])
-        }, for: .touchUpInside)
-    }
 }
 
 
 // MARK: 여기서만 쓰는 확장
 private extension YonghaeTodoList {
-    // ** 색상 바꿔주는 함수
-    func convertHexColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
-        UIColor(red: red/255, green: green / 255, blue: blue / 255, alpha: 1.0)
+    // MARK: todo를 만드는 버튼Action (CREATE)
+    private func todoSubmit(rightButton: UIButton) {
+        rightButton.addAction(UIAction {_ in
+            guard let text = self.textField.text, !text.isEmpty else {
+                return
+            }
+            NotificationCenter.default.post(name: Notification.Name("createTodos"), object: nil, userInfo: ["todo" : text])
+            
+            self.textField.text = "" // 초기화
+        }, for: .touchUpInside)
     }
 }
 
@@ -110,8 +107,21 @@ extension YonghaeTodoList: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
 
+
+// MARK: 커스텀 색상 확장
+extension UIColor {
+    // MARK: 색상 바꿔주는 함수
+    static func convertHexColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
+        UIColor(red: red/255, green: green / 255, blue: blue / 255, alpha: 1.0)
+    }
+}
 
 #Preview {
     UINavigationController(rootViewController: YonghaeTodoList())
@@ -139,5 +149,3 @@ extension YonghaeTodoList: UITextFieldDelegate {
 ///  굉장히 문제가 많지만 솔직히 아직 delegate 패턴이나 컴바인이 헷갈리기 때문에 차근차근 공부합시다...
 ///
 ///  1. 데이터 이동 방식을 Notification으로 바꿨지만 여전히 데이터는 변하지만 뷰의 업데이트를 할려면 reload해야합니다.. ㅠㅠ
-///  2. textField또한 문제가 있음.. TableView는 자체적으로 scrollView가 있어서 괜찮을 줄 알았는데... 키보드가 올라오는걸 막고 있다...
-///   ----- 3월 20일----

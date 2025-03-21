@@ -33,6 +33,7 @@ class MainTableViewController: UITableViewController {
     private func setUpUI() {
         navigationItem.title = "UIKIT EVERYTING"
         let backButton: UIBarButtonItem = UIBarButtonItem()
+        backButton.tintColor = UIColor.convertHexColor(red: 100, green: 13, blue: 95)
         backButton.title = "뒤로가기"
         navigationItem.backBarButtonItem = backButton
     }
