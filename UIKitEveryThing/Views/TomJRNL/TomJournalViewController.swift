@@ -14,26 +14,77 @@ class TomJournalViewController: UIViewController {
         return button
     }()
     
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "JournalCell")
+        return tableView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupNav()
+        setupSearchBar()
     }
 }
 
+
 private extension TomJournalViewController {
-    func setupUI() {
-        self.view.backgroundColor = .systemBackground
-        setupNav()
-    }
     
     func setupNav() {
         self.navigationItem.title = "Journal"
         self.navigationItem.rightBarButtonItem = NavPlusButton
     }
+    
+    func setupSearchBar() {
+        // TODO: Setup Search
+    }
+    
+    func confiureCell() -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "JournalCell")
+        return cell
+    }
 }
 
+// MARK: - Configure Methods
 private extension TomJournalViewController {
     @objc func navPlusButtonDidTap() {
         // TODO: Make tap action
     }
 }
+
+// MARK: - Delegate, DataSource
+extension TomJournalViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "JournalCell", for: indexPath)
+        
+        return cell
+    }
+    
+    
+}
+
+// MARK: - Set up UI
+private extension TomJournalViewController {
+    func setupUI() {
+        self.view.backgroundColor = .systemBackground
+        self.view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+            
+        ])
+    }
+}
+
+// TODO: TableViewDifferable 사용해서 바꿔보기.

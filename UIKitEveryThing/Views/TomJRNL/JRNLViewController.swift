@@ -9,24 +9,17 @@ import UIKit
 
 class TomJRNLTabbarController: UITabBarController {
     
-    private let firstTab: UITab = {
-        let tab = UITab(title: "Journal", image: UIImage(systemName: "person.fill"), identifier: "Title") { _ in
-            UINavigationController(rootViewController: TomJournalViewController())
-        }
-        
-        return tab
-    }()
-    
-    private let secondTab: UITab = {
-        let tab = UITab(title: "Map", image: UIImage(systemName: "map"), identifier: "Title") { _ in
-            UINavigationController(rootViewController: TomMapViewController())
-        }
-        
-        return tab
-    }()
-    
     override func viewDidLoad() {
-        self.tabs = [firstTab, secondTab]
+        setupTabs()
     }
 
+    private func setupTabs() {
+        let journalTab = UITabBarItem(title: "Journal", image: UIImage(systemName: "person"), tag: 0)
+        let mapTab = UITabBarItem(title: "Map", image: UIImage(systemName: "map"), tag: 1)
+        let journalNC = UINavigationController(rootViewController: TomJournalViewController())
+        let mapNC = UINavigationController(rootViewController: TomMapViewController())
+        journalNC.tabBarItem = journalTab
+        mapNC.tabBarItem = mapTab
+        self.viewControllers = [journalNC, mapNC]
+    }
 }
