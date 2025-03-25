@@ -19,7 +19,8 @@ class TomJournalViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "JournalCell")
+        tableView.register(JournalCell.self, forCellReuseIdentifier: "JournalCell")
+        tableView.rowHeight = 65
         return tableView
     }()
     
@@ -43,10 +44,6 @@ private extension TomJournalViewController {
         // TODO: Setup Search
     }
     
-    func confiureCell() -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "JournalCell")
-        return cell
-    }
 }
 
 // MARK: - Configure Methods
@@ -64,7 +61,10 @@ extension TomJournalViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "JournalCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "JournalCell", for: indexPath) as! JournalCell
+        cell.title = "a"
+        cell.subtitle = "alsjlkne"
+        cell.image = UIImage(systemName: "square.and.arrow.down.badge.checkmark")
         
         return cell
     }
