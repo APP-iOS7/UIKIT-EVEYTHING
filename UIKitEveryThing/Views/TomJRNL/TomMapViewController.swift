@@ -6,24 +6,32 @@
 //
 
 import UIKit
+import MapKit
 
 class TomMapViewController: UIViewController {
-
+    
+    private lazy var mapView: MKMapView = {
+        let map = MKMapView()
+        map.translatesAutoresizingMaskIntoConstraints = false
+        return map
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        setupUI()
     }
-    
 
-    /*
-    // MARK: - Navigation
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+private extension TomMapViewController {
+    func setupUI() {
+        self.view.addSubview(mapView)
+        
+        NSLayoutConstraint.activate([
+            mapView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            mapView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            mapView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            mapView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
-    */
-
 }

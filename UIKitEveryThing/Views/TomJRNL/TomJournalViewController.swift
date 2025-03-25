@@ -10,7 +10,7 @@ import UIKit
 class TomJournalViewController: UIViewController {
 
     private lazy var NavPlusButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(navPlusButtonDidTap))
+        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showModal))
         return button
     }()
     
@@ -51,15 +51,16 @@ private extension TomJournalViewController {
 
 // MARK: - Configure Methods
 private extension TomJournalViewController {
-    @objc func navPlusButtonDidTap() {
-        // TODO: Make tap action
+    @objc func showModal() {
+        let vc = JournalModal()
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
 }
 
 // MARK: - Delegate, DataSource
 extension TomJournalViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        10 // TODO: Coll 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
