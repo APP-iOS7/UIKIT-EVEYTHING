@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UITabbarController: UITabBarController {
+class TomTabbarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,7 +15,7 @@ class UITabbarController: UITabBarController {
     }
 }
 
-extension UITabbarController {
+extension TomTabbarController {
     fileprivate func setupTabbar() {
         let firstTabItem = UITabBarItem(
             title: "First", image: UIImage(systemName: "star"), tag: 2000)
