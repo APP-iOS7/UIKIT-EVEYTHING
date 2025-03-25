@@ -18,11 +18,12 @@ class MainTableViewController: UITableViewController {
         ListTile(title: "Open Link", route: LinkViewController()),
         ListTile(title: "UIGesture", route: UIGestureViewController()),
         ListTile(title: "UINavigationBar", route: UINavigationViewController()),
-        ListTile(title: "UITabbarController", route: UITabbarController()),
+        ListTile(title: "UITabbarController", route: TomTabbarController()),
         ListTile(title: "YONGHAE-TODO", route: YonghaeTodoList()),
         ListTile(title: "NotiEx", route: NotificationCenterMainViewController()),
         ListTile(title: "TomTableTableViewController", route: TomTableTableViewController()),
-        ListTile(title: "YonghaeCollectionViewController", route: YonghaeCollectionView())
+        ListTile(title: "YonghaeCollectionViewController", route: YonghaeCollectionView()),
+        ListTile(title: "TomJRNL", route: TomJRNLTabbarController())
     ]
 
     override func viewDidLoad() {
