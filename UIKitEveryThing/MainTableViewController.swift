@@ -23,7 +23,8 @@ class MainTableViewController: UITableViewController {
         ListTile(title: "NotiEx", route: NotificationCenterMainViewController()),
         ListTile(title: "TomTableTableViewController", route: TomTableTableViewController()),
         ListTile(title: "YonghaeCollectionViewController", route: YonghaeCollectionView()),
-        ListTile(title: "TomJRNL", route: TomJRNLTabbarController())
+        ListTile(title: "TomJRNL", route: TomJRNLTabbarController()),
+        ListTile(title: "YonghaeSpeech", route: SpeechApiController())
     ]
 
     override func viewDidLoad() {
